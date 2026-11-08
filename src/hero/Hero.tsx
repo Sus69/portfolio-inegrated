@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
 
 declare global {
   interface Window {
@@ -6,21 +7,32 @@ declare global {
   }
 }
 
+const TOY_FACES = [
+  { mouth: 'w', eyeStyle: 'normal', text: '> hello_world', led: 'green' },
+  { mouth: '3', eyeStyle: 'squint', text: '> compiling_fun', led: 'amber' },
+  { mouth: 'v', eyeStyle: 'sparkle', text: '> cat_approved', led: 'pink' },
+]
+
 /**
- * Hero section — header only, taken verbatim from hero-section/index.html
- * at a542566 (the static <main class="portfolio-content"> projects /
- * tech-stack / contact sections are NOT included: the integrated page
- * supplies those with the txt-img projects section and the footer).
- *
- * The fluid simulation is the original fluid.js IIFE. It grabs the
- * canvas by id on load and runs its own requestAnimationFrame loop, so
- * it is loaded as a classic script (assets.js first, then fluid.js)
- * after this component mounts. It has no cleanup API; the hero never
- * unmounts in this single-page app, so the loop is intentionally left
- * running. Nav links retarget to the integrated sections:
- * Toolkit -> #toolkit, Projects -> #projects, Contact -> #contact.
+ * Hero section with:
+ * - Fluid simulation WebGL canvas
+ * - Staged kinetic line entrance for editorial statements
+ * - Interactive 3D perspective toy with spring recoils and ASCII display toggles
+ * - Reactive feline typography accents
  */
+const GLYPHS = '01_<>{}/*+=~#[]'
+
 export function Hero() {
+  const introRef = useRef<HTMLDivElement>(null)
+  const noteRef = useRef<HTMLParagraphElement>(null)
+  const computerRef = useRef<HTMLDivElement>(null)
+  const computerInnerRef = useRef<HTMLDivElement>(null)
+  const identityRef = useRef<HTMLDivElement>(null)
+  const [toyIndex, setToyIndex] = useState(0)
+  const [screenText, setScreenText] = useState(TOY_FACES[0].text)
+  const [isGlitching, setIsGlitching] = useState(false)
+  const cipherIntervalRef = useRef<number | null>(null)
+
   useEffect(() => {
     if (window.__heroFluidLoaded) return
     window.__heroFluidLoaded = true
@@ -38,129 +50,228 @@ export function Hero() {
       .catch((err) => console.error(err))
   }, [])
 
+  // Kinetic Editorial Staging
+  useLayoutEffect(() => {
+    const media = gsap.matchMedia()
+    media.add('(prefers-reduced-motion: no-preference)', () => {
+      if (introRef.current) {
+        const lines = gsap.utils.toArray<HTMLElement>('.statement-line', introRef.current)
+        gsap.fromTo(
+          lines,
+          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.12, ease: 'power2.out', delay: 0.1 }
+        )
+      }
+      if (noteRef.current) {
+        gsap.fromTo(
+          noteRef.current,
+          { autoAlpha: 0, rotate: -7, scale: 0.94 },
+          { autoAlpha: 1, rotate: -2, scale: 1, duration: 0.55, ease: 'back.out(1.6)', delay: 0.55 }
+        )
+      }
+      if (computerRef.current) {
+        gsap.fromTo(
+          computerRef.current,
+          { autoAlpha: 0, y: 20, scale: 0.95 },
+          { autoAlpha: 1, y: 0, scale: 1, duration: 0.75, ease: 'back.out(1.2)', delay: 0.3 }
+        )
+      }
+      if (identityRef.current) {
+        gsap.fromTo(
+          identityRef.current,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.65, ease: 'power2.out', delay: 0.25 }
+        )
+      }
+    })
+    return () => media.revert()
+  }, [])
+
+  // 3D Pointer Parallax on Computer Toy
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!computerInnerRef.current) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    const x = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2)
+    const y = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2)
+    gsap.to(computerInnerRef.current, {
+      rotateY: x * 14,
+      rotateX: -y * 14,
+      duration: 0.25,
+      ease: 'power2.out',
+      overwrite: 'auto',
+    })
+  }
+
+  const handlePointerLeave = () => {
+    if (!computerInnerRef.current) return
+    gsap.to(computerInnerRef.current, {
+      rotateY: -6,
+      rotateX: 4,
+      duration: 0.65,
+      ease: 'elastic.out(1, 0.4)',
+      overwrite: 'auto',
+    })
+  }
+
+  // Tactile Click Recoil, Screen Expression Cycle & Kinetic Text Decryption
+  const handleComputerClick = () => {
+    const nextIndex = (toyIndex + 1) % TOY_FACES.length
+    setToyIndex(nextIndex)
+    setIsGlitching(true)
+
+    // CRT text decryption scramble
+    if (cipherIntervalRef.current) clearInterval(cipherIntervalRef.current)
+    const target = TOY_FACES[nextIndex].text
+    let frame = 0
+    const totalFrames = 10
+
+    cipherIntervalRef.current = window.setInterval(() => {
+      frame++
+      const progress = frame / totalFrames
+      const revealed = Math.floor(progress * target.length)
+      const scrambled = target
+        .split('')
+        .map((ch, idx) => {
+          if (idx < revealed || ch === ' ' || ch === '>') return ch
+          return GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+        })
+        .join('')
+      setScreenText(scrambled)
+
+      if (frame >= totalFrames) {
+        if (cipherIntervalRef.current) clearInterval(cipherIntervalRef.current)
+        setScreenText(target)
+        setIsGlitching(false)
+      }
+    }, 22)
+
+    if (computerInnerRef.current) {
+      gsap.fromTo(
+        computerInnerRef.current,
+        { scaleX: 1.14, scaleY: 0.86, rotateZ: (Math.random() - 0.5) * 6 },
+        { scaleX: 1, scaleY: 1, rotateZ: 0, duration: 0.65, ease: 'elastic.out(1.4, 0.35)', overwrite: 'auto' }
+      )
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (cipherIntervalRef.current) clearInterval(cipherIntervalRef.current)
+    }
+  }, [])
+
+  const currentFace = TOY_FACES[toyIndex]
+
   return (
     <div className="hero-scope">
       <header className="stage-viewport" id="hero">
+        <div className="scene-container" id="scene-container">
+          <img
+            className="scene-layer layer-background"
+            id="bg-img"
+            src="/hero/BACKGROUND.svg"
+            alt="Illustrated Surreal Landscape"
+            draggable="false"
+          />
 
-    
-          <div className="scene-container" id="scene-container">
+          <canvas
+            className="scene-layer layer-webgl"
+            id="fluid-canvas"
+            role="img"
+            aria-label="Interactive Fluid Reveal Canvas"
+          ></canvas>
 
-      
-            <img
-              className="scene-layer layer-background"
-              id="bg-img"
-              src="/hero/BACKGROUND.svg"
-              alt="Illustrated Surreal Landscape"
-              draggable="false"
-            />
+          <div className="hero-interface" id="hero-interface">
+            <div className="intro-statement" ref={introRef}>
+              <p className="statement-line">Curious by nature.</p>
+              <p className="statement-line">Driven to understand.</p>
+              <p className="statement-line accent">Always building something.</p>
+            </div>
+            <p className="hero-cat-note" ref={noteRef} aria-hidden="true">
+              a cat supervised this build
+            </p>
 
-      
-            <canvas
-              className="scene-layer layer-webgl"
-              id="fluid-canvas"
-              role="img"
-              aria-label="Interactive Fluid Reveal Canvas"
-            ></canvas>
-
-      
-            <div className="hero-interface" id="hero-interface">
-
-        
-              <nav className="nav-pill" aria-label="Main Navigation">
-                <a href="#hero" className="nav-link active">Home</a>
-                <a href="#projects" className="nav-link">Projects</a>
-                <a href="#toolkit" className="nav-link">Toolkit</a>
-                <a href="#contact" className="nav-link">Contact</a>
-              </nav>
-
-        
-              <a href="#contact" className="profile-btn" aria-label="About and Contact Manaal Maple">
-                <svg className="profile-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            
-                  <path d="M8.5 7L7 3.5L10.5 5C11.5 4.3 12.7 4 14 4C15.3 4 16.5 4.3 17.5 5L21 3.5L19.5 7C21 8.5 22 10.5 22 13C22 17.4 18.4 21 14 21C9.6 21 6 17.4 6 13C6 10.5 7 8.5 8.5 7Z" fill="#14245C"/>
-            
-                  <path d="M8.5 6L8 4.8L9.5 5.5" stroke="#FF3F70" strokeWidth="1.2" strokeLinecap="round"/>
-                  <path d="M19.5 6L20 4.8L18.5 5.5" stroke="#FF3F70" strokeWidth="1.2" strokeLinecap="round"/>
-            
-                  <line x1="4" y1="13" x2="8" y2="12.5" stroke="#14245C" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="4" y1="15" x2="8" y2="15.5" stroke="#14245C" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="24" y1="13" x2="20" y2="12.5" stroke="#14245C" strokeWidth="1.2" strokeLinecap="round"/>
-                  <line x1="24" y1="15" x2="20" y2="15.5" stroke="#14245C" strokeWidth="1.2" strokeLinecap="round"/>
-            
-                  <path d="M5 25.5C5 21.8 8.8 19 14 19C19.2 19 23 21.8 23 25.5" stroke="#14245C" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </a>
-
-        
-              <div className="intro-statement">
-                <p className="statement-line">Curious by nature.</p>
-                <p className="statement-line">Driven to understand.</p>
-                <p className="statement-line accent">Always building something.</p>
-              </div>
-              <p className="hero-cat-note" aria-hidden="true">a cat supervised this build</p>
-
-        
-              <div className="portrait-hint" aria-hidden="true">
-                <svg className="hint-wave" width="18" height="10" viewBox="0 0 18 10" fill="none">
-                  <path d="M1 5C3.5 1.5 6 1.5 8.5 5C11 8.5 13.5 8.5 16 5" stroke="#FF3F70" strokeWidth="2" strokeLinecap="round"/>
-                </svg>
-              </div>
-
-        
-              <div className="retro-computer-wrapper" id="retro-computer-toy">
-                <div className="retro-computer" role="img" aria-label="Sculptural retro cat computer with live display">
-            
-                  <div className="comp-ears">
-                    <span className="comp-ear left"></span>
-                    <span className="comp-ear right"></span>
-                  </div>
-            
-                  <div className="comp-monitor">
-                    <div className="comp-bezel">
-                      <div className="comp-screen">
-                        <div className="screen-cat-face">
-                          <span className="cat-eye left"></span>
-                          <span className="cat-mouth">w</span>
-                          <span className="cat-eye right"></span>
-                        </div>
-                        <div className="screen-cursor-line">&gt; hello_world</div>
-                      </div>
-                    </div>
-              
-                    <div className="comp-vents">
-                      <span></span><span></span><span></span>
-                    </div>
-                  </div>
-            
-                  <div className="comp-base">
-                    <div className="comp-floppy-slot"></div>
-                    <div className="comp-badge"></div>
-                    <div className="comp-led"></div>
-                  </div>
-                </div>
-              </div>
-
-        
-              <div className="identity-block">
-                <h1 className="identity-name">
-                  <span className="cat-m">M</span>anaal <span className="cat-m">M</span>aple
-                </h1>
-                <p className="identity-descriptor">AI · Systems · Design · Development</p>
-              </div>
-
-        
-              <a href="#projects" className="scroll-cue" aria-label="Scroll down to view portfolio sections">
-                <span className="scroll-label">Scroll to explore</span>
-                <svg className="scroll-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none">
-                  <path d="M9 3V17M9 17L4 12M9 17L14 12" stroke="#14245C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-
+            <div className="portrait-hint" aria-hidden="true">
+              <svg className="hint-wave" width="18" height="10" viewBox="0 0 18 10" fill="none">
+                <path d="M1 5C3.5 1.5 6 1.5 8.5 5C11 8.5 13.5 8.5 16 5" stroke="#FF3F70" strokeWidth="2" strokeLinecap="round" />
+              </svg>
             </div>
 
-          </div>
+            <div
+              className="retro-computer-wrapper"
+              id="retro-computer-toy"
+              ref={computerRef}
+              onPointerMove={handlePointerMove}
+              onPointerLeave={handlePointerLeave}
+              onClick={handleComputerClick}
+            >
+              <div
+                className="retro-computer"
+                ref={computerInnerRef}
+                role="button"
+                tabIndex={0}
+                aria-label="Interactive sculptural retro cat computer. Click to cycle terminal screen."
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleComputerClick()
+                  }
+                }}
+              >
+                <div className="comp-ears">
+                  <span className="comp-ear left"></span>
+                  <span className="comp-ear right"></span>
+                </div>
 
-        </header>
+                <div className="comp-monitor">
+                  <div className="comp-bezel">
+                    <div className={`comp-screen ${isGlitching ? 'is-glitching' : ''}`}>
+                      <div className={`screen-cat-face ${currentFace.eyeStyle}`}>
+                        <span className="cat-eye left"></span>
+                        <span className="cat-mouth">{currentFace.mouth}</span>
+                        <span className="cat-eye right"></span>
+                      </div>
+                      <div className="screen-cursor-line">{screenText}</div>
+                    </div>
+                  </div>
+
+                  <div className="comp-vents">
+                    <span></span><span></span><span></span>
+                  </div>
+                </div>
+
+                <div className="comp-base">
+                  <div className="comp-floppy-slot"></div>
+                  <div className="comp-badge"></div>
+                  <div className={`comp-led ${currentFace.led}`}></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="identity-block" ref={identityRef}>
+              <h1 className="identity-name">
+                <span className="cat-m">M</span>anaal <span className="cat-m">M</span>aple
+              </h1>
+              <p className="identity-descriptor">AI · Systems · Design · Development</p>
+            </div>
+
+            <a
+              href="#toolkit"
+              className="scroll-cue"
+              aria-label="Scroll down to view portfolio sections"
+              onClick={(e) => {
+                e.preventDefault()
+                document.getElementById('toolkit')?.scrollIntoView({ behavior: 'smooth' })
+              }}
+            >
+              <span className="scroll-label">Scroll to explore</span>
+              <svg className="scroll-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none">
+                <path d="M9 3V17M9 17L4 12M9 17L14 12" stroke="#14245C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </header>
     </div>
   )
 }

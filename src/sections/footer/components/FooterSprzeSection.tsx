@@ -69,8 +69,19 @@ export function FooterSprzeSection() {
         .to(glows, { x: (index) => index % 2 ? '15vw' : '-12vw', y: (index) => index * 12 - 20, scale: 1.28, stagger: 0.035, duration: 1 }, '<')
 
       phaseB
-        .to(period, { y: () => dropDistance, duration: 0.34, ease: 'power2.in' }, 0)
-        .to({}, { duration: 0.06 }, 0.34)
+        .to(period, {
+          y: () => dropDistance,
+          scaleY: 1.35,
+          scaleX: 0.82,
+          duration: 0.34,
+          ease: 'power2.in',
+        }, 0)
+        .to(period, {
+          scaleY: 0.65,
+          scaleX: 1.45,
+          duration: 0.08,
+          ease: 'power2.out',
+        }, 0.34)
         .to(period, {
           keyframes: [
             { scale: 2, ease: 'power1.inOut' },
@@ -78,17 +89,25 @@ export function FooterSprzeSection() {
             { scale: 8, ease: 'power1.inOut' },
           ],
           duration: 0.1,
-        }, 0.4)
+        }, 0.42)
         .to(footerReveal, {
           clipPath: () => {
             const next = revealGeometry()!
             return `circle(${next.radius}px at ${next.x}px ${next.y}px)`
           },
-          duration: 0.42,
+          duration: 0.46,
           ease: 'power2.out',
-        }, 0.48)
-        .to(footerContent, { autoAlpha: 1, y: 0, duration: 0.14, ease: 'power2.out' }, 0.76)
-        .to([chrome, caption], { autoAlpha: 0, duration: 0.12 }, 0.72)
+        }, 0.46)
+        .to([chrome, caption], { autoAlpha: 0, duration: 0.14 }, 0.48)
+        .to(footerContent, { autoAlpha: 1, duration: 0.01 }, 0.58)
+        .fromTo(footerContent.querySelector('.ftr-footer-topline'),
+          { autoAlpha: 0, y: 16 }, { autoAlpha: 1, y: 0, duration: 0.22, ease: 'power2.out' }, 0.60)
+        .fromTo(footerContent.querySelector('.ftr-footer-main'),
+          { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.26, ease: 'power2.out' }, 0.66)
+        .fromTo(footerContent.querySelector('.ftr-cat-row'),
+          { autoAlpha: 0, scale: 0.92, rotate: -4 }, { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.28, ease: 'back.out(1.5)' }, 0.72)
+        .fromTo(footerContent.querySelector('.ftr-footer-bottomline'),
+          { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.22, ease: 'power2.out' }, 0.78)
 
       const prepareCompletion = (preserveProgress = false) => {
         const previousProgress = phaseB.progress()
@@ -101,12 +120,12 @@ export function FooterSprzeSection() {
         const targetY = Math.max(periodBox.height / 2, visibleHeight - periodBox.height / 2)
         dropDistance = Math.max(0, targetY - periodCenterY)
 
-        gsap.set(period, { y: dropDistance, scale: 1, autoAlpha: 1 })
+        gsap.set(period, { y: dropDistance, scale: 1, scaleX: 1, scaleY: 1, autoAlpha: 1 })
         const geometry = revealGeometry()
         const closedReveal = `circle(0px at ${geometry.x}px ${geometry.y}px)`
-        gsap.set(period, { y: 0, scale: 1, autoAlpha: 1 })
+        gsap.set(period, { y: 0, scale: 1, scaleX: 1, scaleY: 1, autoAlpha: 1 })
         gsap.set(footerReveal, { clipPath: closedReveal })
-        gsap.set(footerContent, { autoAlpha: 0, y: 44 })
+        gsap.set(footerContent, { autoAlpha: 0 })
         completionStarted = true
         phaseB.invalidate()
         phaseB.progress(preserveProgress ? previousProgress : 0, true)
@@ -116,14 +135,14 @@ export function FooterSprzeSection() {
         completionStarted = false
         dropDistance = 0
         phaseB.progress(0, true)
-        gsap.set(period, { y: 0, scale: 1, autoAlpha: 1 })
+        gsap.set(period, { y: 0, scale: 1, scaleX: 1, scaleY: 1, autoAlpha: 1 })
         gsap.set(footerReveal, {
           clipPath: () => {
             const geometry = revealGeometry()
             return `circle(0px at ${geometry.x}px ${geometry.y}px)`
           },
         })
-        gsap.set(footerContent, { autoAlpha: 0, y: 44 })
+        gsap.set(footerContent, { autoAlpha: 0 })
         gsap.set([chrome, caption], { autoAlpha: 1 })
       }
 
@@ -132,7 +151,7 @@ export function FooterSprzeSection() {
         trigger: root,
         pin: root,
         start: 'top top',
-        end: () => `+=${scene.clientWidth < 700 ? 3400 : 4200}`,
+        end: () => `+=${scene.clientWidth < 700 ? 1400 : 1800}`,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           if (self.progress < HANDOFF_PROGRESS) {

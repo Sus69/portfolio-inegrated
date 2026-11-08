@@ -1,0 +1,173 @@
+/* ========================================================
+   UNIFIED FIXED PORTFOLIO NAVIGATION
+   Two navigation elements:
+   1. Nav pill at top left (Home | Projects | Contact)
+   2. Circular profile button at top right
+   ======================================================== */
+
+.portfolio-nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* 1. Navigation Pill — Top-Left Corner */
+.nav-pill {
+  position: fixed;
+  top: 32px;
+  left: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(242, 245, 250, 0.90);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid var(--midnight, #14245C);
+  border-radius: 28px 32px 26px 34px / 32px 26px 34px 28px;
+  box-shadow: 0 4px 16px rgba(20, 36, 92, 0.08);
+  pointer-events: auto;
+  z-index: 1000;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(20, 36, 92, 0.12);
+}
+
+.nav-pill-indicator {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  height: calc(100% - 12px);
+  background: var(--pink, #FF3F70);
+  border-radius: 16px 20px 14px 22px / 20px 14px 22px 16px;
+  box-shadow: 0 2px 10px rgba(255, 63, 112, 0.35);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transform-origin: center center;
+}
+
+.nav-link {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-family-body, 'DM Sans', sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--midnight, #14245C);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 16px 20px 14px 22px / 20px 14px 22px 16px;
+  transition: color 0.2s ease;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  background: transparent;
+}
+
+.nav-link:hover {
+  color: var(--midnight, #14245C);
+}
+
+.nav-link.active {
+  color: #ffffff;
+}
+
+/* 2. Circular Profile Button — Top-Right Corner */
+.profile-btn {
+  position: fixed;
+  top: 32px;
+  right: 40px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--pink, #FF3F70);
+  border: 1.5px solid var(--midnight, #14245C);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  box-shadow: 0 4px 16px rgba(255, 63, 112, 0.35);
+  pointer-events: auto;
+  z-index: 1000;
+  cursor: pointer;
+  will-change: transform;
+  transition: box-shadow 0.2s ease;
+}
+
+.profile-btn:hover {
+  box-shadow: 0 8px 24px rgba(255, 63, 112, 0.50);
+}
+
+.profile-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.profile-btn:hover .profile-icon {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 850px) {
+  .nav-pill {
+    top: 20px;
+    left: 20px;
+    padding: 4px 8px;
+    gap: 2px;
+  }
+
+  .nav-link {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
+
+  .profile-btn {
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .profile-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-pill {
+    top: 16px;
+    left: 12px;
+    padding: 3px 6px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .profile-btn {
+    top: 16px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .profile-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+

@@ -1,0 +1,140 @@
+/* ==========================================================================
+   Tactile & Kinetic Custom Cursor System
+   Accent: SVG Green (#a9dd74 / #10b981)
+   ========================================================================== */
+
+:root {
+  --cursor-green: #a9dd74;
+  --cursor-green-glow: rgba(169, 221, 116, 0.45);
+  --cursor-green-fill: rgba(169, 221, 116, 0.08);
+  --cursor-green-active: rgba(169, 221, 116, 0.22);
+}
+
+body.has-custom-cursor,
+body.has-custom-cursor a,
+body.has-custom-cursor button,
+body.has-custom-cursor [role="button"] {
+  cursor: none !important;
+}
+
+.custom-cursor-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999999;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.25s ease-out;
+  filter: drop-shadow(0 1px 2px rgba(20, 36, 92, 0.35));
+}
+
+.custom-cursor-container.is-active {
+  opacity: 1;
+}
+
+/* Core Dot: Instantaneous targeting needle in SVG green */
+.cursor-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 50%;
+  background-color: var(--cursor-green);
+  box-shadow: 0 0 8px rgba(169, 221, 116, 0.95), 0 0 2px #a9dd74;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Kinetic Ring: Organic follower with contextual deformation in SVG green */
+.cursor-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  margin-top: -18px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cursor-green);
+  background: var(--cursor-green-fill);
+  box-shadow: 0 0 12px var(--cursor-green-glow), inset 0 0 6px rgba(169, 221, 116, 0.15);
+  pointer-events: none;
+  box-sizing: border-box;
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.cursor-ring.is-expanding {
+  background: var(--cursor-green-active);
+  box-shadow: 0 0 20px rgba(169, 221, 116, 0.55);
+}
+
+/* Crosshair Reticle ticks for CRT / Mascot targeting */
+.cursor-ring.is-crosshair::before,
+.cursor-ring.is-crosshair::after {
+  content: '';
+  position: absolute;
+  background-color: var(--cursor-green);
+  box-shadow: 0 0 4px var(--cursor-green);
+}
+
+.cursor-ring.is-crosshair::before {
+  top: -5px;
+  bottom: -5px;
+  left: 50%;
+  width: 1.5px;
+  transform: translateX(-50%);
+}
+
+.cursor-ring.is-crosshair::after {
+  left: -5px;
+  right: -5px;
+  top: 50%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+/* Context Badge Text (e.g. "VIEW" over projects) */
+.cursor-label {
+  position: absolute;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cursor-green);
+  text-shadow: 0 0 6px rgba(169, 221, 116, 0.7);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cursor-ring.is-expanding .cursor-label {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor-container {
+    display: none !important;
+  }
+
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor [role="button"] {
+    cursor: auto !important;
+  }
+}

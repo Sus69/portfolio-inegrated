@@ -83,12 +83,20 @@ export function createCardTimeline(root: HTMLElement, scene: HTMLElement) {
   timeline.addLabel('front-stack', 8.65)
 
   // All fronts coincide before hiding the covered cards. Shopify alone turns
-  // over, revealing its actual Figma reverse. No reversed multi-card rig.
+  // over, revealing its actual Figma reverse. Parabolic lift simulates physical dealing.
   timeline.set(cards.slice(0, last), { autoAlpha: 0 }, 'front-stack')
   timeline.addLabel('flip', 9)
-  timeline.to(inners[last], { rotationY: 180, duration: 1.25, ease: 'power2.inOut' }, 'flip')
+  timeline.to(cards[last], { y: -32, scale: 1.05, duration: 0.55, ease: 'power2.out' }, 'flip')
+  timeline.to(cards[last], { y: 0, scale: 1, duration: 0.65, ease: 'power2.in' }, 'flip+=0.55')
+  timeline.to(inners[last], { rotationY: 180, duration: 1.2, ease: 'power2.inOut' }, 'flip')
   timeline.to(root.querySelector('.subtitle-front'), { autoAlpha: 0, duration: 0.3 }, 'flip+=0.2')
   timeline.to(root.querySelector('.subtitle-back'), { autoAlpha: 1, duration: 0.3 }, 'flip+=0.8')
+
+  const themeCat = root.querySelector('.theme-cat--cards')
+  if (themeCat) {
+    timeline.to(themeCat, { rotate: -6, scale: 1.1, duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, 'flip+=0.3')
+  }
+
   timeline.addLabel('figma', 10.25)
 
   // Recycle only hidden cards. Reversible sets restore the front hand on rewind.
@@ -122,8 +130,14 @@ export function createCardTimeline(root: HTMLElement, scene: HTMLElement) {
   // paints above the stage, which is then hidden completely, shadows included.
   timeline.set(nextScene, { autoAlpha: 1 }, 'expand+=1.6')
   timeline.set(stage, { autoAlpha: 0 }, 'expand+=1.6')
-  timeline.fromTo(nextScene.querySelector('.next-section__inner'),
-    { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.65 }, 'expand+=1.6')
+  const nextInner = nextScene.querySelector('.next-section__inner')
+  if (nextInner) {
+    timeline.fromTo(nextInner, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.65, ease: 'power2.out' }, 'expand+=1.6')
+    const kickerLine = nextInner.querySelector('.next-section__line')
+    if (kickerLine) {
+      timeline.fromTo(kickerLine, { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.6, ease: 'power2.inOut' }, 'expand+=1.75')
+    }
+  }
   timeline.addLabel('revealed', 21.45)
   timeline.to({}, { duration: 0.35 })
 
@@ -257,7 +271,7 @@ export function createCardTimeline(root: HTMLElement, scene: HTMLElement) {
 
   const trigger = ScrollTrigger.create({
     id: 'toolkit', trigger: root, pin: scene,
-    start: 'top top', end: () => `+=${scene.clientWidth < 700 ? 5400 : 7000}`,
+    start: 'top top', end: () => `+=${scene.clientWidth < 700 ? 2400 : 3200}`,
     anticipatePin: 1,
     onUpdate: (self) => followScroll(self),
     onRefreshInit: () => {

@@ -34,15 +34,6 @@ export function ScrollExperience() {
           </div>
 
           <div className="scene-chrome">
-            <a className="wordmark" href="#top" aria-label="Back to top">gl<span>↘</span></a>
-            <nav className="nav-pill" aria-label="Section navigation">
-              <a href="#journey">journey</a>
-              <a className="active" href="#toolkit">toolkit</a>
-              <a href="#projects">projects</a>
-              <a href="#playground">playground</a>
-              <a href="#contact">contact</a>
-              <span className="language">EN <i>/</i> FR</span>
-            </nav>
             <header className="heading-block">
               <p className="heading-block__eyebrow">selected tools / 2024—25</p>
               <h1>Toolkit</h1>

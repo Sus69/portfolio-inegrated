@@ -302,6 +302,25 @@
   width: 108px;
   transform: rotate(3deg);
   flex: none;
+  pointer-events: auto;
+  cursor: pointer;
+  transform-origin: 50% 90%;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.theme-cat--footer:hover {
+  transform: scale(1.15) rotate(-3deg);
+}
+
+.theme-cat--footer .theme-cat__tail {
+  transform-origin: 100px 86px;
+  animation: catTailSwishFooter 3.8s ease-in-out infinite alternate;
+}
+
+@keyframes catTailSwishFooter {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-8deg); }
+  100% { transform: rotate(12deg); }
 }
 
 .theme-note--footer {

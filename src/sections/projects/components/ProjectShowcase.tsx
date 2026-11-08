@@ -144,8 +144,8 @@ export function ProjectShowcase() {
           trigger: section,
           pin: true,
           start: 'top top',
-          end: () => `+=${Math.max(1200, window.innerHeight * 1.8)}`,
-          scrub: 0.45,
+          end: () => `+=${Math.max(900, window.innerHeight * 1.2)}`,
+          scrub: 0.2,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
