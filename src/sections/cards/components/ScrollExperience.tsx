@@ -27,7 +27,7 @@ export function ScrollExperience() {
         <div className="scene" ref={sceneRef}>
           <div className="next-section">
             <div className="next-section__inner">
-              <span className="next-section__kicker">end of toolkit</span>
+              <span className="next-section__kicker">end of skills</span>
               <h2>A new canvas<br />for the next idea.</h2>
               <span className="next-section__line" />
             </div>
@@ -35,11 +35,11 @@ export function ScrollExperience() {
 
           <div className="scene-chrome">
             <header className="heading-block">
-              <p className="heading-block__eyebrow">selected tools / 2024—25</p>
-              <h1>Toolkit</h1>
+              <p className="heading-block__eyebrow">skills / from my CV</p>
+              <h1>Skills</h1>
               <p className="heading-block__subtitle">
-                <span className="subtitle-front">Creative Front-end</span>
-                <span className="subtitle-back">Art Direction</span>
+                <span className="subtitle-front">Technical Skills</span>
+                <span className="subtitle-back">Soft Skills</span>
               </p>
             </header>
             <div className="progress" aria-hidden="true">
@@ -57,7 +57,7 @@ export function ScrollExperience() {
           </div>
 
           <div className="reduced-content">
-            <p className="reduced-content__label">Toolkit contents</p>
+            <p className="reduced-content__label">Skills</p>
             <div className="reduced-content__grid">
               {toolkitCards.map((card) => (
                 <div className="reduced-content__item" key={card.id}>

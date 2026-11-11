@@ -26,48 +26,53 @@ export type ToolkitCard = {
   back: CardSide
 }
 
-// The reverse order intentionally makes the edge-on turn land on Figma first,
-// then opens into the art-direction fan before ending on the gradient mark.
+// Skills from Manaal's CV (ManaalMaple_0_1n19.pdf).
+// First spin (fronts): technical skills.
+// Second spin (backs): soft skills, drawn from his leadership work
+// (Technical Lead, team of 12 on the college website redesign, hackathon
+// organiser, presenting findings to evaluators).
+// The reverse order intentionally makes the edge-on turn land on the first
+// soft skill first, then opens into the rest of the fan.
 export const toolkitCards: ToolkitCard[] = [
   {
+    id: 'typescript',
+    front: { title: 'Type\nscript', eyebrow: '01 / language', label: 'Language', tone: 'yellow' },
+    back: { title: 'Presenting', eyebrow: '08 / soft skill', label: 'Soft skill', tone: 'gradient' },
+  },
+  {
     id: 'javascript',
-    front: { title: 'Java\nscript', eyebrow: '01 / language', label: 'Language', tone: 'yellow' },
-    back: { title: 'GL', eyebrow: '08 / transition', label: 'Transition', tone: 'gradient', mark: 'GL' },
+    front: { title: 'Java\nscript', eyebrow: '02 / language', label: 'Language', tone: 'white' },
+    back: { title: 'Adaptability', eyebrow: '07 / soft skill', label: 'Soft skill', tone: 'slate' },
   },
   {
-    id: 'three',
-    front: { title: 'three\n.js', eyebrow: '02 / 3d', label: '3D Library', tone: 'white' },
-    back: { title: 'Light\nroom', eyebrow: '07 / photo', label: 'Photo editing', tone: 'slate' },
+    id: 'python',
+    front: { title: 'Python', eyebrow: '03 / language', label: 'Language', tone: 'black' },
+    back: { title: 'Time\nManagement', eyebrow: '06 / soft skill', label: 'Soft skill', tone: 'red' },
   },
   {
-    id: 'glsl',
-    front: { title: 'GLSL', eyebrow: '03 / shader', label: 'Shader language', tone: 'black' },
-    back: { title: 'Illustrator', eyebrow: '06 / vector', label: 'Vector design', tone: 'red' },
+    id: 'sql',
+    front: { title: 'SQL', eyebrow: '04 / data', label: 'Database', tone: 'black' },
+    back: { title: 'Project\nManagement', eyebrow: '05 / soft skill', label: 'Soft skill', tone: 'maroon' },
   },
   {
-    id: 'gsap',
-    front: { title: 'GSAP', eyebrow: '04 / motion', label: 'Motion library', tone: 'black' },
-    back: { title: 'InDesign', eyebrow: '05 / layout', label: 'Layout tool', tone: 'maroon' },
-  },
-  {
-    id: 'vue',
-    front: { title: 'Vue', eyebrow: '05 / framework', label: 'Framework', tone: 'green' },
-    back: { title: 'After\nEffects', eyebrow: '04 / motion', label: 'Motion design', tone: 'indigo' },
+    id: 'nextjs',
+    front: { title: 'Next.js', eyebrow: '05 / framework', label: 'Framework', tone: 'green' },
+    back: { title: 'Problem\nsolving', eyebrow: '04 / soft skill', label: 'Soft skill', tone: 'indigo' },
   },
   {
     id: 'react',
     front: { title: 'React', eyebrow: '06 / framework', label: 'Framework', tone: 'slate' },
-    back: { title: 'CapCut', eyebrow: '03 / video', label: 'Video editing', tone: 'white' },
+    back: { title: 'Teamwork', eyebrow: '03 / soft skill', label: 'Soft skill', tone: 'white' },
   },
   {
-    id: 'webflow',
-    front: { title: 'Web\nflow', eyebrow: '07 / builder', label: 'Website builder', tone: 'white' },
-    back: { title: 'Photo\nshop', eyebrow: '02 / image', label: 'Image editing', tone: 'blue' },
+    id: 'supabase',
+    front: { title: 'Supa\nbase', eyebrow: '07 / backend', label: 'Backend', tone: 'white' },
+    back: { title: 'Communication', eyebrow: '02 / soft skill', label: 'Soft skill', tone: 'blue' },
   },
   {
-    id: 'shopify',
-    front: { title: 'Shopify', eyebrow: '08 / commerce', label: 'E-commerce platform', tone: 'lime' },
-    back: { title: 'Figma', eyebrow: '01 / design', label: 'Design tool', tone: 'figma' },
+    id: 'tailwind',
+    front: { title: 'Tail\nwind', eyebrow: '08 / styling', label: 'CSS framework', tone: 'lime' },
+    back: { title: 'Leadership', eyebrow: '01 / soft skill', label: 'Soft skill', tone: 'figma' },
   },
 ]
 

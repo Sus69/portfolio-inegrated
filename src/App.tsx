@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Navigation } from './components/Navigation'
 import { CustomCursor } from './components/CustomCursor'
 import { ScrollSpine } from './components/ScrollSpine'
+import { LoadingScreen } from './components/LoadingScreen'
 import { Hero } from './hero/Hero'
 import { ScrollExperience } from './sections/cards/components/ScrollExperience'
 import { ProjectShowcase } from './sections/projects/components/ProjectShowcase'
@@ -17,6 +19,17 @@ import { FooterSprzeSection } from './sections/footer/components/FooterSprzeSect
  *   4. ftr-sprze-section (footer surprise reveal) — id="contact"
  */
 export default function App() {
+  const [loading, setLoading] = useState(true)
+
+  // Loading screen first — nothing else renders until it is dismissed.
+  if (loading) {
+    return (
+      <div className="integrated-portfolio">
+        <LoadingScreen onDone={() => setLoading(false)} />
+      </div>
+    )
+  }
+
   return (
     <div className="integrated-portfolio">
       <CustomCursor />
