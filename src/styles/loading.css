@@ -1,4 +1,4 @@
-/* Loading screen — Whimsical Editorial theme, shown before everything else. */
+/* Loading screen — shown before everything else. */
 .loading-screen {
   position: fixed;
   inset: 0;
@@ -7,9 +7,9 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: #f2f5fa;
-  color: #14245c;
-  font-family: 'DM Sans', Arial, Helvetica, sans-serif;
+  background: #F2F5FA;
+  color: #13182b;
+  font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
   opacity: 1;
   transition: opacity 0.55s ease;
 }
@@ -31,20 +31,20 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #ff3f70;
+  color: #ff758f;
 }
 
 .loading-screen__title {
   margin: 0;
-  font-family: 'Fredoka', 'DM Sans', sans-serif;
+  font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
   font-size: clamp(44px, 10vw, 72px);
   font-weight: 600;
   line-height: 1;
-  color: #14245c;
+  color: #13182b;
 }
 
 .loading-screen__title span {
-  color: #3548c8;
+  color: #2e86de;
 }
 
 .loading-screen__dots {
@@ -62,16 +62,16 @@
 }
 
 .loading-screen__dots span:nth-child(1) {
-  background: #ff3f70;
+  background: #ff758f;
 }
 
 .loading-screen__dots span:nth-child(2) {
-  background: #ff8552;
+  background: #ff9f43;
   animation-delay: 0.15s;
 }
 
 .loading-screen__dots span:nth-child(3) {
-  background: #ffd447;
+  background: #fbc531;
   animation-delay: 0.3s;
 }
 
@@ -90,40 +90,35 @@
   max-width: 460px;
   font-size: 16px;
   line-height: 1.6;
-  color: #14245c;
+  color: #13182b;
 }
 
 .loading-screen__enter {
   appearance: none;
-  border: 2px solid #14245c;
+  border: 2px solid #13182b;
   border-radius: 999px;
-  background: #ffd447;
-  color: #14245c;
+  background: #fbc531;
+  color: #13182b;
   padding: 12px 28px;
-  font-family: 'Fredoka', 'DM Sans', sans-serif;
+  font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
   font-size: 17px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 4px 4px 0 #14245c;
+  box-shadow: 4px 4px 0 #13182b;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .loading-screen__enter:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 #14245c;
+  box-shadow: 6px 6px 0 #13182b;
 }
 
 .loading-screen__enter:active {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #14245c;
+  box-shadow: 2px 2px 0 #13182b;
 }
 
-.loading-screen__note {
-  margin: 20px 0 0;
-  font-family: 'Caveat', cursive;
-  font-size: 20px;
-  color: #ff3f70;
-}
+
 
 @media (prefers-reduced-motion: reduce) {
   .loading-screen {

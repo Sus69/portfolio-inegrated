@@ -69,7 +69,6 @@ export function LoadingScreen({ onDone }: LoadingScreenProps) {
           Enter portfolio →
         </button>
 
-        <p className="loading-screen__note">a cat supervised this build</p>
       </div>
     </div>
   )

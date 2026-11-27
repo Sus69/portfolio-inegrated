@@ -92,11 +92,6 @@ export function createCardTimeline(root: HTMLElement, scene: HTMLElement) {
   timeline.to(root.querySelector('.subtitle-front'), { autoAlpha: 0, duration: 0.3 }, 'flip+=0.2')
   timeline.to(root.querySelector('.subtitle-back'), { autoAlpha: 1, duration: 0.3 }, 'flip+=0.8')
 
-  const themeCat = root.querySelector('.theme-cat--cards')
-  if (themeCat) {
-    timeline.to(themeCat, { rotate: -6, scale: 1.1, duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' }, 'flip+=0.3')
-  }
-
   timeline.addLabel('figma', 10.25)
 
   // Recycle only hidden cards. Reversible sets restore the front hand on rewind.

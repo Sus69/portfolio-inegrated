@@ -24,7 +24,6 @@ const GLYPHS = '01_<>{}/*+=~#[]'
 
 export function Hero() {
   const introRef = useRef<HTMLDivElement>(null)
-  const noteRef = useRef<HTMLParagraphElement>(null)
   const computerRef = useRef<HTMLDivElement>(null)
   const computerInnerRef = useRef<HTMLDivElement>(null)
   const identityRef = useRef<HTMLDivElement>(null)
@@ -60,13 +59,6 @@ export function Hero() {
           lines,
           { autoAlpha: 0, y: 16 },
           { autoAlpha: 1, y: 0, duration: 0.65, stagger: 0.12, ease: 'power2.out', delay: 0.1 }
-        )
-      }
-      if (noteRef.current) {
-        gsap.fromTo(
-          noteRef.current,
-          { autoAlpha: 0, rotate: -7, scale: 0.94 },
-          { autoAlpha: 1, rotate: -2, scale: 1, duration: 0.55, ease: 'back.out(1.6)', delay: 0.55 }
         )
       }
       if (computerRef.current) {
@@ -187,13 +179,9 @@ export function Hero() {
               <p className="statement-line">Driven to understand.</p>
               <p className="statement-line accent">Always building something.</p>
             </div>
-            <p className="hero-cat-note" ref={noteRef} aria-hidden="true">
-              a cat supervised this build
-            </p>
-
             <div className="portrait-hint" aria-hidden="true">
               <svg className="hint-wave" width="18" height="10" viewBox="0 0 18 10" fill="none">
-                <path d="M1 5C3.5 1.5 6 1.5 8.5 5C11 8.5 13.5 8.5 16 5" stroke="#FF3F70" strokeWidth="2" strokeLinecap="round" />
+                <path d="M1 5C3.5 1.5 6 1.5 8.5 5C11 8.5 13.5 8.5 16 5" stroke="#ff758f" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
 
@@ -266,7 +254,7 @@ export function Hero() {
             >
               <span className="scroll-label">Scroll to explore</span>
               <svg className="scroll-arrow" width="18" height="22" viewBox="0 0 18 22" fill="none">
-                <path d="M9 3V17M9 17L4 12M9 17L14 12" stroke="#14245C" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M9 3V17M9 17L4 12M9 17L14 12" stroke="#13182b" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
           </div>

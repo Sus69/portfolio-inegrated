@@ -102,7 +102,7 @@ export const CustomCursor = () => {
         '.project-char, .project-letter, .preview-trigger, [data-cursor="expand"]'
       )
       const reticleTarget = target.closest<HTMLElement>(
-        '.retro-computer, .retro-computer-wrapper, .theme-cat, [class*="theme-cat"], [data-cursor="crosshair"]'
+        '.retro-computer, .retro-computer-wrapper, [data-cursor="crosshair"]'
       )
       const clickableTarget = target.closest<HTMLElement>(
         'button, a, .nav-link, .profile-btn, input, textarea, [role="button"], [data-cursor="pointer"]'

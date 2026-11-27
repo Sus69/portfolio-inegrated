@@ -192,10 +192,10 @@ export function Navigation() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="12" cy="8" r="4" stroke="#14245C" strokeWidth="2" />
+          <circle cx="12" cy="8" r="4" stroke="#13182b" strokeWidth="2" />
           <path
             d="M4.5 20.5C4.5 16.634 7.858 13.5 12 13.5C16.142 13.5 19.5 16.634 19.5 20.5"
-            stroke="#14245C"
+            stroke="#13182b"
             strokeWidth="2"
             strokeLinecap="round"
           />
